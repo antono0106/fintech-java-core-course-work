@@ -4,6 +4,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Unit test for simple AppMain.
  */
@@ -15,6 +18,15 @@ public class AppMainTest
     @Test
     public void shouldAnswerWithTrue()
     {
-        assertTrue( true );
+        File file = new File("some.txt");
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(file.getAbsolutePath());
+        assertTrue( file.exists() );
     }
 }
