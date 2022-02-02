@@ -1,5 +1,7 @@
 package com.moroz.persistence.config;
 
+import com.moroz.logging.CustomLogger;
+
 import java.sql.Connection;
 import java.util.Properties;
 
@@ -9,8 +11,8 @@ import java.util.Properties;
  **/
 public class ConnectionConfig {
     private static Connection connection;
-
     private final Properties props = new Properties();
+
 
     private ConnectionConfig() {
 

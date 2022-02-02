@@ -8,51 +8,47 @@ import java.time.LocalDateTime;
  * @since : 01.02.2022, вт
  **/
 public class CustomLogger {
-    private final String FILE_NAME = "src/main/resources/logs.log";
-    private final File LOG = new File(FILE_NAME);
+    private static final String FILE_NAME = "logs.log";
+    private static final File LOG = new File(FILE_NAME);
+    private static PrintWriter writer;
 
-    private Class<?> clazz;
-
-    private PrintWriter writer;
-
-    private static CustomLogger logger;
-
-
-
-
-    private CustomLogger(Class<?> clazz) {
-        this.clazz = clazz;
+    static {
         try {
-            if (LOG.exists()) {
+            if (!LOG.exists()) {
                 LOG.createNewFile();
             }
-            this.writer = new PrintWriter(LOG);
+            writer = new PrintWriter(new FileWriter(LOG, true));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            writer.close();
+        }));
     }
 
-    public static CustomLogger getInstance(Class<?> clazz) {
-        if (logger == null) {
-            logger = new CustomLogger(clazz);
-        }
+    private Class<?> clazz;
 
-        return logger;
+    public CustomLogger(Class<?> clazz) {
+        this.clazz = clazz;
+    }
+
+    public File getLogFile() {
+        return LOG;
     }
 
     public void info(String info) {
-        this.writer.printf("%s INFO: %s \n", LocalDateTime.now(), info);
+        writer.printf("%s INFO FROM %s: %s \n", LocalDateTime.now(), clazz.getSimpleName(), info);
     }
 
     public void error(String error) {
-        this.writer.printf("%s ERROR: %s \n", LocalDateTime.now(), error);
+        writer.printf("%s ERROR FROM %s: %s \n", LocalDateTime.now(), clazz.getSimpleName(), error);
+    }
+
+    public void error(String error, Throwable t) {
+        writer.printf("%s ERROR FROM %s: Exception: %s, message: %s \n", LocalDateTime.now(), clazz.getSimpleName(), t, error);
     }
 
     public void warning(String warning) {
-        this.writer.printf("%s WARNING FROM %s: %s \n", LocalDateTime.now(), clazz.getSimpleName(), warning);
-    }
-
-    public void close() {
-        /*Runtime runtime = Runtime.getRuntime()*/
+        writer.printf("%s WARNING FROM %s: %s \n", LocalDateTime.now(), clazz.getSimpleName(), warning);
     }
 }
