@@ -38,17 +38,21 @@ public class CustomLogger {
 
     public void info(String info) {
         writer.printf("%s INFO FROM %s: %s \n", LocalDateTime.now(), clazz.getSimpleName(), info);
+        writer.flush();
     }
 
     public void error(String error) {
         writer.printf("%s ERROR FROM %s: %s \n", LocalDateTime.now(), clazz.getSimpleName(), error);
+        writer.flush();
     }
 
     public void error(String error, Throwable t) {
         writer.printf("%s ERROR FROM %s: Exception: %s, message: %s \n", LocalDateTime.now(), clazz.getSimpleName(), t, error);
+        writer.flush();
     }
 
     public void warning(String warning) {
         writer.printf("%s WARNING FROM %s: %s \n", LocalDateTime.now(), clazz.getSimpleName(), warning);
+        writer.flush();
     }
 }

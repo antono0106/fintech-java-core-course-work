@@ -4,7 +4,7 @@ package com.moroz.persistence.entites;
  * @author : anton
  * @since : 01.02.2022, вт
  **/
-public class UserEntity {
+public class UserEntity implements Entity {
     private String fullName;
     private String email;
     private String number;
@@ -13,6 +13,9 @@ public class UserEntity {
         this.fullName = fullName;
         this.email = email;
         this.number = number;
+    }
+
+    public UserEntity() {
     }
 
     public String getFullName() {

@@ -10,8 +10,7 @@ import java.io.FileReader;
 /**
  * Unit test for simple AppMain.
  */
-public class AppMainTest
-{
+public class LoggerTest {
     /**
      * Rigorous Test :-)
      */
@@ -19,5 +18,6 @@ public class AppMainTest
     public void shouldAnswerWithTrue() {
         CustomLogger customLogger = new CustomLogger(Object.class);
         customLogger.info("Some info");
+        assertTrue(customLogger.getLogFile().length() > 0);
     }
 }
