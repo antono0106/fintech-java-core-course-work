@@ -12,7 +12,7 @@ public class ConnectionTest {
 
     @Test
     public void appMustBeConnectedToDb() throws SQLException {
-        Connection connection = ConnectionConfig.getInstance();
+        Connection connection = ConnectionConfig.getConnection();
         assertNotNull(connection);
         assertFalse(connection.isClosed());
         connection.close();

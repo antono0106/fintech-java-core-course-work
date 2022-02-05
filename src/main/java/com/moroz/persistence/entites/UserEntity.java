@@ -7,12 +7,12 @@ package com.moroz.persistence.entites;
 public class UserEntity implements Entity {
     private String fullName;
     private String email;
-    private String number;
+    private String phoneNumber;
 
-    public UserEntity(String fullName, String email, String number) {
+    public UserEntity(String fullName, String email, String phoneNumber) {
         this.fullName = fullName;
         this.email = email;
-        this.number = number;
+        this.phoneNumber = phoneNumber;
     }
 
     public UserEntity() {
@@ -34,11 +34,11 @@ public class UserEntity implements Entity {
         this.email = email;
     }
 
-    public String getNumber() {
-        return number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

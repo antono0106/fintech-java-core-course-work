@@ -5,6 +5,7 @@ import com.moroz.logging.CustomLogger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -12,23 +13,26 @@ import java.util.Properties;
  * @since : 01.02.2022, вт
  **/
 public class ConnectionConfig {
-    private static final String url = "jdbc:postgresql://localhost:5432/cinema";
-    private static final Properties props = new Properties();
+    private static final String URL = "jdbc:postgresql://localhost:5432/cinema";
+    private static final Properties PROPS = new Properties();
     private static Connection connection;
 
     static final CustomLogger logger = new CustomLogger(ConnectionConfig.class);
 
-    public static Connection getInstance() {
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(ConnectionConfig::closeConnection));
+    }
+
+    public static Connection getConnection() {
         if (connection == null) {
             try {
                 Class.forName("org.postgresql.Driver");
-                props.setProperty("user", "postgres");
-                props.setProperty("password", "root");
-                connection = DriverManager.getConnection(url, props);
-                logger.info("Connected to " + connection.getCatalog());
+                PROPS.setProperty("user", "postgres");
+                PROPS.setProperty("password", "root");
+                connection = DriverManager.getConnection(URL, PROPS);
+                logger.info("Connected to " + connection.getCatalog() + " database");
             } catch (SQLException | ClassNotFoundException e) {
                 logger.error(e.getMessage(), e);
-                throw new RuntimeException("Failed to connect to database");
             }
         }
         return connection;
@@ -40,7 +44,7 @@ public class ConnectionConfig {
                 connection.close();
                 logger.info("Connection closed successfully");
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(Arrays.toString(e.getStackTrace()));
             }
         }
     }
