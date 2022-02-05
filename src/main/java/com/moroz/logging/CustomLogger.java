@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * @since : 01.02.2022, вт
  **/
 public class CustomLogger {
-    private static final String FILE_NAME = "logs.log";
+    private static final String FILE_NAME = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "logs.log";
     private static final File LOG = new File(FILE_NAME);
     private static PrintWriter writer;
 
