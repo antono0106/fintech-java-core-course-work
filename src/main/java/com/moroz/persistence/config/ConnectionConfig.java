@@ -32,7 +32,7 @@ public class ConnectionConfig {
                 connection = DriverManager.getConnection(URL, PROPS);
                 logger.info("Connected to " + connection.getCatalog() + " database");
             } catch (SQLException | ClassNotFoundException e) {
-                logger.error(e.getMessage(), e);
+                logger.error(e);
             }
         }
         return connection;

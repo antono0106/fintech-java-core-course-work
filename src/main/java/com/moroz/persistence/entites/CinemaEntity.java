@@ -49,4 +49,13 @@ public class CinemaEntity extends AbstractEntity implements Entity {
     public static int getCounter() {
         return counter;
     }
+
+    @Override
+    public String toString() {
+        return "CinemaEntity{" +
+                "name='" + name + '\'' +
+                ", rowsCount=" + rowsCount +
+                ", placesCount=" + placesCount +
+                '}';
+    }
 }

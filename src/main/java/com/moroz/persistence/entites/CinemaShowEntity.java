@@ -1,6 +1,7 @@
 package com.moroz.persistence.entites;
 
 import java.time.LocalTime;
+import java.util.Objects;
 
 /**
  * @author : anton
@@ -45,5 +46,28 @@ public class CinemaShowEntity implements Entity {
 
     public int getAmount() {
         return amount;
+    }
+
+    @Override
+    public String toString() {
+        return "CinemaShowEntity{" +
+                "movieEntity=" + movieEntity +
+                ", cinemaEntity=" + cinemaEntity +
+                ", time=" + time +
+                ", amount=" + amount +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CinemaShowEntity that = (CinemaShowEntity) o;
+        return amount == that.amount && Objects.equals(movieEntity, that.movieEntity) && Objects.equals(cinemaEntity, that.cinemaEntity) && Objects.equals(time, that.time);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(movieEntity, cinemaEntity, time, amount);
     }
 }

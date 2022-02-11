@@ -2,6 +2,7 @@ package com.moroz.logging;
 
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 /**
  * @author : anton
@@ -46,8 +47,8 @@ public class CustomLogger {
         writer.flush();
     }
 
-    public void error(String error, Throwable t) {
-        writer.printf("%s ERROR FROM %s: Exception: %s, message: %s \n", LocalDateTime.now(), clazz.getSimpleName(), t, error);
+    public void error(Throwable t) {
+        writer.printf("%s ERROR FROM %s: Exception: %s, stacktrace:\n %s \n", LocalDateTime.now(), clazz.getSimpleName(), t, Arrays.toString(t.getStackTrace()));
         writer.flush();
     }
 
