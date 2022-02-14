@@ -20,11 +20,11 @@ public class UserDaoTest {
         userDao = new UserDao();
     }
 
-    @Ignore
+    /*@Ignore
     @Test
     public void saveTest() {
         assertNotNull(userDao.saveEntity(new UserEntity("Anton", "email@gmail.com", "1111111")));
-    }
+    }*/
 
     @Test
     public void getAllTest() {

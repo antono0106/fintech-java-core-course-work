@@ -8,14 +8,14 @@ import java.util.List;
  * @author : anton
  * @since : 11.02.2022, пт
  **/
-public interface BaseDao<T> {
+public interface BaseDao<K, V> {
     CustomLogger logger = new CustomLogger(BaseDao.class);
 
-    List<T> findAll();
+    List<K> findAll();
 
-    T saveEntity(T entity);
+    void saveEntity(K entity);
 
-    T updateEntity(T entity);
+    void updateEntity(K entity, V whereValue);
 
-    void deleteEntity(T entity);
+    void deleteEntity(K entity);
 }
