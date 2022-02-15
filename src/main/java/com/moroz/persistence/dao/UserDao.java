@@ -19,7 +19,6 @@ public class UserDao implements BaseDao<UserEntity, String> {
     private final String tableName = "users";
     private final Connection connection = ConnectionConfig.getConnection();
 
-    private final Pattern fullNamePattern = Pattern.compile("(\\b[A-Z]{1}[a-z]+)( )([A-Z]{1}[a-z]+\\b)");
     private final Pattern phoneNumberPattern = Pattern.compile("^(?:\\+38)?(0\\d{9})$");
     private final Pattern emailPattern = Pattern.compile("^(.+)@(.+)$");
 
@@ -43,8 +42,7 @@ public class UserDao implements BaseDao<UserEntity, String> {
     @Override
     public void saveEntity(UserEntity entity) {
         try {
-            if (!fullNamePattern.matcher(entity.getFullName()).matches()
-                || !emailPattern.matcher(entity.getEmail()).matches()
+            if (!emailPattern.matcher(entity.getEmail()).matches()
                 || !phoneNumberPattern.matcher(entity.getPhoneNumber()).matches()) {
                 throw new SQLException("Input data doesn't match");
             }
@@ -62,8 +60,7 @@ public class UserDao implements BaseDao<UserEntity, String> {
     @Override
     public void updateEntity(UserEntity entity, String email) {
         try {
-            if (!fullNamePattern.matcher(entity.getFullName()).matches()
-                    || !emailPattern.matcher(entity.getEmail()).matches()
+            if (!emailPattern.matcher(entity.getEmail()).matches()
                     || !phoneNumberPattern.matcher(entity.getPhoneNumber()).matches()
                     || !emailPattern.matcher(email).matches()) {
                 throw new SQLException("Input data doesn't match");
@@ -83,8 +80,7 @@ public class UserDao implements BaseDao<UserEntity, String> {
     @Override
     public void deleteEntity(UserEntity entity) {
         try {
-            if (!fullNamePattern.matcher(entity.getFullName()).matches()
-                    || !emailPattern.matcher(entity.getEmail()).matches()
+            if (!emailPattern.matcher(entity.getEmail()).matches()
                     || !phoneNumberPattern.matcher(entity.getPhoneNumber()).matches()) {
                 throw new SQLException("Input data doesn't match");
             }
