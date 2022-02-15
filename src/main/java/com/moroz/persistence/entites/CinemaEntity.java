@@ -9,17 +9,16 @@ public class CinemaEntity extends AbstractEntity implements Entity {
     private int rowsCount;
     private int placesCount;
 
-    private static int counter = 0;
-
     public CinemaEntity(String name, int rowsCount, int placesCount) {
-        super(++counter);
         this.name = name;
         this.rowsCount = rowsCount;
         this.placesCount = placesCount;
     }
 
-    public CinemaEntity(long id) {
-        super(id);
+    public CinemaEntity(String name) {
+        this.name = name;
+        this.rowsCount = 15;
+        this.placesCount = 13;
     }
 
     public String getName() {
@@ -44,10 +43,6 @@ public class CinemaEntity extends AbstractEntity implements Entity {
 
     public void setPlacesCount(int placesCount) {
         this.placesCount = placesCount;
-    }
-
-    public static int getCounter() {
-        return counter;
     }
 
     @Override

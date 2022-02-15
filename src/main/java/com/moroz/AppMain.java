@@ -4,7 +4,6 @@ import com.moroz.dispatcher.Dispatcher;
 import com.moroz.exceptions.NotEnoughArgsException;
 import com.moroz.exceptions.TooMuchArgsException;
 import com.moroz.logging.CustomLogger;
-import com.moroz.persistence.config.ConnectionConfig;
 
 import java.io.IOException;
 

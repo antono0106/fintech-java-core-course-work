@@ -1,6 +1,6 @@
 package com.moroz;
 
-import com.moroz.persistence.config.ConnectionConfig;
+import com.moroz.persistence.ConnectionUtil;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -12,7 +12,7 @@ public class ConnectionTest {
 
     @Test
     public void appMustBeConnectedToDb() throws SQLException {
-        Connection connection = ConnectionConfig.getConnection();
+        Connection connection = ConnectionUtil.getConnection();
         assertNotNull(connection);
         assertFalse(connection.isClosed());
         connection.close();

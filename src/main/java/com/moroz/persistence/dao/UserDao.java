@@ -1,14 +1,11 @@
 package com.moroz.persistence.dao;
 
-import com.moroz.logging.CustomLogger;
-import com.moroz.persistence.config.ConnectionConfig;
+import com.moroz.persistence.ConnectionUtil;
 import com.moroz.persistence.entites.UserEntity;
-import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -17,7 +14,7 @@ import java.util.regex.Pattern;
  **/
 public class UserDao implements BaseDao<UserEntity, String> {
     private final String tableName = "users";
-    private final Connection connection = ConnectionConfig.getConnection();
+    private final Connection connection = ConnectionUtil.getConnection();
 
     private final Pattern phoneNumberPattern = Pattern.compile("^(?:\\+38)?(0\\d{9})$");
     private final Pattern emailPattern = Pattern.compile("^(.+)@(.+)$");
@@ -51,7 +48,7 @@ public class UserDao implements BaseDao<UserEntity, String> {
                             + entity.getFullName() + "', '" + entity.getEmail() + "', '" + entity.getPhoneNumber() + "');",
                     Statement.RETURN_GENERATED_KEYS);
             pstmt.executeUpdate();
-            logger.info("Saved " + entity.getEmail());
+            logger.info("Saved " + entity);
         } catch (SQLException e) {
             logger.error(e);
         }
@@ -93,6 +90,26 @@ public class UserDao implements BaseDao<UserEntity, String> {
         } catch (SQLException e) {
             logger.error(e);
         }
+    }
+
+    public UserEntity findByEmail(String email) {
+        for (UserEntity e: findAll()) {
+            if (e.getEmail().equals(email)) {
+                logger.info("Found " + e);
+                return e;
+            }
+        }
+        throw new RuntimeException("Entity not found");
+    }
+
+    public void deleteByEmail(String email) {
+        for (UserEntity e: findAll()) {
+            if (e.getEmail().equals(email)) {
+                deleteEntity(e);
+                break;
+            }
+        }
+        throw new RuntimeException("Entity not found");
     }
 
 }

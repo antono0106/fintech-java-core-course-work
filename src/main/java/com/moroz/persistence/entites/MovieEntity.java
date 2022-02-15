@@ -7,15 +7,11 @@ package com.moroz.persistence.entites;
 public class MovieEntity extends AbstractEntity implements Entity {
     private String name;
 
-    private static int counter = 0;
-
     public MovieEntity(String name) {
-        super(++counter);
         this.name = name;
     }
 
     public MovieEntity() {
-        super(++counter);
     }
 
     public String getName() {

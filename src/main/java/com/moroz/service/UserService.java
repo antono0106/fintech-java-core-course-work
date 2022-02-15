@@ -1,6 +1,7 @@
 package com.moroz.service;
 
 import com.moroz.persistence.dao.UserDao;
+import com.moroz.persistence.entites.UserEntity;
 
 /**
  * @author : anton
@@ -15,5 +16,9 @@ public class UserService {
 
     public UserDao getUserDao() {
         return userDao;
+    }
+
+    public void register(UserEntity entity) {
+        userDao.saveEntity(entity);
     }
 }

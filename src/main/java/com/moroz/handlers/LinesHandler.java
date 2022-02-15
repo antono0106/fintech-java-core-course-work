@@ -5,7 +5,7 @@ import com.moroz.exceptions.NoSplitterException;
 import com.moroz.exceptions.NoSuchCommandException;
 import com.moroz.logging.CustomLogger;
 import com.moroz.persistence.entites.UserEntity;
-import com.moroz.resolvers.UserRegister;
+import com.moroz.service.UserService;
 
 import java.util.List;
 
@@ -31,14 +31,12 @@ public class LinesHandler {
             String[] splitter = line.split("\\|");
 
             if (splitter[0].equals(FileCommands.REGISTER.toString())) {
-                UserRegister userRegister = new UserRegister();
-                userRegister.register(new UserEntity(splitter[1], splitter[2], splitter[3]));
+                UserService userService = new UserService();
+                userService.register(new UserEntity(splitter[1], splitter[2], splitter[3]));
+            }  else if (splitter[0].equals(FileCommands.CREATE_CINEMA.toString())) {
+
             } else {
-                try {
-                    throw new NoSuchCommandException();
-                } catch (NoSuchCommandException e) {
-                    logger.error(e);
-                }
+                throw new NoSuchCommandException();
             }
         }
     }

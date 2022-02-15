@@ -1,4 +1,4 @@
-package com.moroz.persistence.config;
+package com.moroz.persistence;
 
 import com.moroz.logging.CustomLogger;
 
@@ -12,15 +12,15 @@ import java.util.Properties;
  * @author : anton
  * @since : 01.02.2022, вт
  **/
-public class ConnectionConfig {
+public class ConnectionUtil {
     private static final String URL = "jdbc:postgresql://localhost:5432/cinema";
     private static final Properties PROPS = new Properties();
     private static Connection connection;
 
-    static final CustomLogger logger = new CustomLogger(ConnectionConfig.class);
+    static final CustomLogger logger = new CustomLogger(ConnectionUtil.class);
 
     static {
-        Runtime.getRuntime().addShutdownHook(new Thread(ConnectionConfig::closeConnection));
+        Runtime.getRuntime().addShutdownHook(new Thread(ConnectionUtil::closeConnection));
     }
 
     public static Connection getConnection() {
