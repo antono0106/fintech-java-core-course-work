@@ -18,7 +18,7 @@ public class CinemaDao implements BaseDao<CinemaEntity, Long> {
 
     @Override
     public List<CinemaEntity> findAll() {
-        List<CinemaEntity> users = new ArrayList<>();
+        List<CinemaEntity> cinemas = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName + ";");
@@ -28,12 +28,12 @@ public class CinemaDao implements BaseDao<CinemaEntity, Long> {
                         resultSet.getString("name"),
                         resultSet.getInt("rows_amount"), resultSet.getInt("places_per_row_amount"));
                 cinemaEntity.setId(resultSet.getInt("id"));
-                users.add(cinemaEntity);
+                cinemas.add(cinemaEntity);
             }
         } catch (SQLException e) {
             logger.error(e);
         }
-        return users;
+        return cinemas;
     }
 
     @Override
