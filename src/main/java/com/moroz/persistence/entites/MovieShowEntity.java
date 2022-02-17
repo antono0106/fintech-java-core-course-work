@@ -7,17 +7,17 @@ import java.util.Objects;
  * @author : anton
  * @since : 01.02.2022, вт
  **/
-public class CinemaShowEntity implements Entity {
+public class MovieShowEntity extends AbstractEntity implements Entity {
     private MovieEntity movieEntity;
     private CinemaEntity cinemaEntity;
     private LocalTime time;
-    private final int amount;
+    private final int price;
 
-    public CinemaShowEntity(MovieEntity movieEntity, CinemaEntity cinemaEntity, LocalTime time, int amount) {
+    public MovieShowEntity(MovieEntity movieEntity, CinemaEntity cinemaEntity, LocalTime time, int amount) {
         this.movieEntity = movieEntity;
         this.cinemaEntity = cinemaEntity;
         this.time = time;
-        this.amount = amount;
+        this.price = amount;
     }
 
     public MovieEntity getMovieEntity() {
@@ -44,17 +44,17 @@ public class CinemaShowEntity implements Entity {
         this.time = time;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getPrice() {
+        return price;
     }
 
     @Override
     public String toString() {
-        return "CinemaShowEntity{" +
+        return "MovieShowEntity{" +
                 "movieEntity=" + movieEntity +
                 ", cinemaEntity=" + cinemaEntity +
                 ", time=" + time +
-                ", amount=" + amount +
+                ", amount=" + price +
                 '}';
     }
 
@@ -62,12 +62,12 @@ public class CinemaShowEntity implements Entity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CinemaShowEntity that = (CinemaShowEntity) o;
-        return amount == that.amount && Objects.equals(movieEntity, that.movieEntity) && Objects.equals(cinemaEntity, that.cinemaEntity) && Objects.equals(time, that.time);
+        MovieShowEntity that = (MovieShowEntity) o;
+        return price == that.price && Objects.equals(movieEntity, that.movieEntity) && Objects.equals(cinemaEntity, that.cinemaEntity) && Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(movieEntity, cinemaEntity, time, amount);
+        return Objects.hash(movieEntity, cinemaEntity, time, price);
     }
 }

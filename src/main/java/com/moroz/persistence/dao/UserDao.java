@@ -83,7 +83,7 @@ public class UserDao implements BaseDao<UserEntity, String> {
             }
 
             PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
-                            + "full_name = '" + entity.getFullName() + "', email = '" + entity.getEmail() + "', phone = '" + entity.getPhoneNumber() + "';",
+                            + "full_name = '" + entity.getFullName() + "'AND email = '" + entity.getEmail() + "'AND phone = '" + entity.getPhoneNumber() + "';",
                     Statement.RETURN_GENERATED_KEYS);
             pstmt.executeUpdate();
             logger.info("Deleted " + entity.getEmail());

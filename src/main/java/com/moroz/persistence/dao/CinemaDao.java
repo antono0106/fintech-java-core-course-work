@@ -68,13 +68,23 @@ public class CinemaDao implements BaseDao<CinemaEntity, Long> {
     public void deleteEntity(CinemaEntity entity) {
         try {
             PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
-                            + "name = '" + entity.getName() + "', rows_amount  = '" + entity.getRowsCount() + "', places_per_row_amount = '" + entity.getPlacesCount() + "';",
+                            + "name = '" + entity.getName() + "'AND rows_amount  = '" + entity.getRowsCount() + "' AND places_per_row_amount = '" + entity.getPlacesCount() + "';",
                     Statement.RETURN_GENERATED_KEYS);
             pstmt.executeUpdate();
             logger.info("Deleted " + entity);
         } catch (SQLException e) {
             logger.error(e);
         }
+    }
+
+    public CinemaEntity findById(long id) {
+        for (CinemaEntity e: findAll()) {
+            if (e.getId() == id) {
+                logger.info("Found " + e);
+                return e;
+            }
+        }
+        throw new RuntimeException("Entity not found");
     }
 
     public CinemaEntity findByName(String name) {

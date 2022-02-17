@@ -74,5 +74,25 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
         }
     }
 
+    public MovieEntity findById(long id) {
+        for (MovieEntity e: findAll()) {
+            if (e.getId() == id) {
+                logger.info("Found " + e);
+                return e;
+            }
+        }
+        throw new RuntimeException("Entity not found");
+    }
 
+    public void deleteById(long id) {
+        try {
+            PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
+                            + " id = " + id + ";",
+                    Statement.RETURN_GENERATED_KEYS);
+            pstmt.executeUpdate();
+            logger.info("Deleted entity by id =" + id);
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+    }
 }

@@ -1,6 +1,5 @@
 package com.moroz.persistence.entites;
 
-import com.moroz.persistence.enums.PaymentStatus;
 import com.moroz.persistence.enums.TicketStatus;
 
 import java.time.LocalDateTime;
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
  * @since : 01.02.2022, вт
  **/
 public class TicketEntity implements Entity {
-    private CinemaShowEntity cinemaShow;
+    private MovieShowEntity cinemaShow;
     private int row;
     private int place;
     private UserEntity userEntity;
@@ -19,7 +18,7 @@ public class TicketEntity implements Entity {
     private LocalDateTime dateOfStatusModification;
     private String paymentCode;
 
-    public TicketEntity(CinemaShowEntity cinemaShow, int row, int place, UserEntity userEntity, TicketStatus status) {
+    public TicketEntity(MovieShowEntity cinemaShow, int row, int place, UserEntity userEntity, TicketStatus status) {
         this.cinemaShow = cinemaShow;
         this.row = row;
         this.place = place;
@@ -29,11 +28,11 @@ public class TicketEntity implements Entity {
         this.dateOfStatusModification = LocalDateTime.now();
     }
 
-    public CinemaShowEntity getCinemaShow() {
+    public MovieShowEntity getCinemaShow() {
         return cinemaShow;
     }
 
-    public void setCinemaShow(CinemaShowEntity cinemaShow) {
+    public void setCinemaShow(MovieShowEntity cinemaShow) {
         this.cinemaShow = cinemaShow;
     }
 
