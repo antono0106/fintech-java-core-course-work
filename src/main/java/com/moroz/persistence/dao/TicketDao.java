@@ -2,13 +2,13 @@ package com.moroz.persistence.dao;
 
 import com.moroz.persistence.ConnectionUtil;
 import com.moroz.persistence.entites.MovieShowEntity;
+import com.moroz.persistence.entites.PaymentEntity;
 import com.moroz.persistence.entites.TicketEntity;
 import com.moroz.persistence.entites.UserEntity;
+import com.moroz.persistence.enums.PaymentStatus;
+import com.moroz.persistence.enums.TicketStatus;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,19 +21,44 @@ public class TicketDao implements BaseDao<TicketEntity, Long> {
     private final Connection connection = ConnectionUtil.getConnection();
 
     private final MovieShowDao movieShowDao = new MovieShowDao();
+    private final PaymentDao paymentDao = new PaymentDao();
+
+    private final List<TicketStatus> statuses = List.of(TicketStatus.NEW, TicketStatus.PROCESSING, TicketStatus.DONE, TicketStatus.FAILED);
 
     @Override
     public List<TicketEntity> findAll() {
         List<TicketEntity> ticketEntities = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
+        try(Statement statement = connection.createStatement();) {
+
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName + ";");
 
             while (resultSet.next()) {
                 MovieShowEntity movieShowEntity = movieShowDao.findById(resultSet.getInt("movie_show_id"));
 
+                TicketStatus ticketStatus = null;
 
+                for (TicketStatus status: statuses) {
+                    if (status.getId() == resultSet.getInt("status_id")) {
+                        ticketStatus = status;
+                        break;
+                    }
+                }
 
+                PaymentEntity paymentEntity = null;
+
+                for (PaymentEntity pEntity: paymentDao.findAll()) {
+                    if (pEntity.getId() == Integer.parseInt(resultSet.getString("payment_id"))) {
+                        paymentEntity = paymentDao.findById(pEntity.getId());
+                    }
+                }
+
+                ticketEntities.add(new TicketEntity(movieShowEntity,
+                        resultSet.getInt("row"),
+                        resultSet.getInt("place"),
+                        ticketStatus,
+                        resultSet.getTimestamp("creation_date").toLocalDateTime(),
+                        resultSet.getTimestamp("modification_date").toLocalDateTime(),
+                        paymentEntity));
             }
         } catch (SQLException e) {
             logger.error(e);
@@ -43,16 +68,41 @@ public class TicketDao implements BaseDao<TicketEntity, Long> {
 
     @Override
     public void saveEntity(TicketEntity entity) {
+        try(PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName + "(movie_show_id, row, place) VALUES ('"
+                        + entity.getMovieShowEntity().getId() + "', '" + entity.getRow() + "', '" + entity.getPlace() + "');",
+                Statement.RETURN_GENERATED_KEYS);) {
 
+            pstmt.executeUpdate();
+            logger.info("Saved " + entity);
+        } catch (SQLException e) {
+            logger.error(e);
+        }
     }
 
     @Override
-    public void updateEntity(TicketEntity entity, Long whereValue) {
+    public void updateEntity(TicketEntity entity, Long statusId) {
+        try(PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
+                        + "movie_show_id = '" + entity.getMovieShowEntity().getId() + "', status_id = '" + entity.getStatus().getId() + "', modification_date = '" + entity.getDateOfStatusModification() + "'" +
+                        " WHERE status_id = '" + statusId +"';",
+                Statement.RETURN_GENERATED_KEYS);) {
 
+            pstmt.executeUpdate();
+            logger.info("Updated " + entity);
+        } catch (SQLException e) {
+            logger.error(e);
+        }
     }
 
     @Override
     public void deleteEntity(TicketEntity entity) {
+        try(PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
+                        + "movie_show_id = '" + entity.getMovieShowEntity().getId() + "'AND row = '" + entity.getRow() + "'AND place = '" + entity.getPlace() + "';",
+                Statement.RETURN_GENERATED_KEYS);) {
 
+            pstmt.executeUpdate();
+            logger.info("Deleted " + entity);
+        } catch (SQLException e) {
+            logger.error(e);
+        }
     }
 }

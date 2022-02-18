@@ -19,8 +19,8 @@ public class CinemaDao implements BaseDao<CinemaEntity, Long> {
     @Override
     public List<CinemaEntity> findAll() {
         List<CinemaEntity> cinemas = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
+        try(Statement statement = connection.createStatement();) {
+
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName + ";");
 
             while(resultSet.next()) {
@@ -38,11 +38,11 @@ public class CinemaDao implements BaseDao<CinemaEntity, Long> {
 
     @Override
     public void saveEntity(CinemaEntity entity) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName
-                            + " (name, rows_amount, places_per_row_amount) VALUES ('"
-                            + entity.getName() + "', '" + entity.getRowsCount() + "', '" + entity.getPlacesCount() + "');",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName
+                        + " (name, rows_amount, places_per_row_amount) VALUES ('"
+                        + entity.getName() + "', '" + entity.getRowsCount() + "', '" + entity.getPlacesCount() + "');",
+                Statement.RETURN_GENERATED_KEYS);) {
+
             pstmt.executeUpdate();
             logger.info("Saved " + entity);
         } catch (SQLException e) {
@@ -52,11 +52,11 @@ public class CinemaDao implements BaseDao<CinemaEntity, Long> {
 
     @Override
     public void updateEntity(CinemaEntity entity, Long id) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
-                            + "name = '" + entity.getName() + "', rows_amount = '" + entity.getRowsCount() + "', places_per_row_amount = '" + entity.getPlacesCount() + "'" +
-                            " WHERE id = '" + id +"';",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
+                        + "name = '" + entity.getName() + "', rows_amount = '" + entity.getRowsCount() + "', places_per_row_amount = '" + entity.getPlacesCount() + "'" +
+                        " WHERE id = '" + id +"';",
+                Statement.RETURN_GENERATED_KEYS);) {
+
             pstmt.executeUpdate();
             logger.info("Updated " + entity);
         } catch (SQLException e) {
@@ -66,10 +66,10 @@ public class CinemaDao implements BaseDao<CinemaEntity, Long> {
 
     @Override
     public void deleteEntity(CinemaEntity entity) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
-                            + "name = '" + entity.getName() + "'AND rows_amount  = '" + entity.getRowsCount() + "' AND places_per_row_amount = '" + entity.getPlacesCount() + "';",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
+                        + "name = '" + entity.getName() + "'AND rows_amount  = '" + entity.getRowsCount() + "' AND places_per_row_amount = '" + entity.getPlacesCount() + "';",
+                Statement.RETURN_GENERATED_KEYS);) {
+
             pstmt.executeUpdate();
             logger.info("Deleted " + entity);
         } catch (SQLException e) {

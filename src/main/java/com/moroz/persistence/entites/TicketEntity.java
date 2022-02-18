@@ -9,31 +9,40 @@ import java.time.LocalDateTime;
  * @since : 01.02.2022, вт
  **/
 public class TicketEntity implements Entity {
-    private MovieShowEntity cinemaShow;
+    private MovieShowEntity movieShowEntity;
     private int row;
     private int place;
-    private UserEntity userEntity;
     private TicketStatus status;
     private final LocalDateTime dateOfCreation;
     private LocalDateTime dateOfStatusModification;
-    private String paymentCode;
+    private PaymentEntity paymentEntity;
 
-    public TicketEntity(MovieShowEntity cinemaShow, int row, int place, UserEntity userEntity, TicketStatus status) {
-        this.cinemaShow = cinemaShow;
+    public TicketEntity(MovieShowEntity movieShowEntity, int row, int place) {
+        this.movieShowEntity = movieShowEntity;
         this.row = row;
         this.place = place;
-        this.userEntity = userEntity;
-        this.status = status;
+        this.status = TicketStatus.NEW;
         this.dateOfCreation = LocalDateTime.now();
         this.dateOfStatusModification = LocalDateTime.now();
+        this.paymentEntity = null;
     }
 
-    public MovieShowEntity getCinemaShow() {
-        return cinemaShow;
+    public TicketEntity(MovieShowEntity movieShowEntity, int row, int place, TicketStatus status, LocalDateTime dateOfCreation, LocalDateTime dateOfStatusModification, PaymentEntity paymentEntity) {
+        this.movieShowEntity = movieShowEntity;
+        this.row = row;
+        this.place = place;
+        this.status = status;
+        this.dateOfCreation = dateOfCreation;
+        this.dateOfStatusModification = dateOfStatusModification;
+        this.paymentEntity = paymentEntity;
     }
 
-    public void setCinemaShow(MovieShowEntity cinemaShow) {
-        this.cinemaShow = cinemaShow;
+    public MovieShowEntity getMovieShowEntity() {
+        return movieShowEntity;
+    }
+
+    public void setMovieShowEntity(MovieShowEntity movieShowEntity) {
+        this.movieShowEntity = movieShowEntity;
     }
 
     public int getRow() {
@@ -50,14 +59,6 @@ public class TicketEntity implements Entity {
 
     public void setPlace(int place) {
         this.place = place;
-    }
-
-    public UserEntity getUserEntity() {
-        return userEntity;
-    }
-
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
     }
 
     public TicketStatus getStatus() {
@@ -80,11 +81,11 @@ public class TicketEntity implements Entity {
         this.dateOfStatusModification = dateOfStatusModification;
     }
 
-    public String getPaymentCode() {
-        return paymentCode;
+    public PaymentEntity getPaymentEntity() {
+        return paymentEntity;
     }
 
-    public void setPaymentCode(String paymentCode) {
-        this.paymentCode = paymentCode;
+    public void setPaymentEntity(PaymentEntity paymentEntity) {
+        this.paymentEntity = paymentEntity;
     }
 }

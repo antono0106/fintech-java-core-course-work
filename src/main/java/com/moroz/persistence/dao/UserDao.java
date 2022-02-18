@@ -22,8 +22,8 @@ public class UserDao implements BaseDao<UserEntity, String> {
     @Override
     public List<UserEntity> findAll() {
         List<UserEntity> users = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
+
+        try(Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName + ";");
 
             while(resultSet.next()) {
@@ -38,15 +38,14 @@ public class UserDao implements BaseDao<UserEntity, String> {
 
     @Override
     public void saveEntity(UserEntity entity) {
-        try {
+        try(PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName + " VALUES ('"
+                        + entity.getFullName() + "', '" + entity.getEmail() + "', '" + entity.getPhoneNumber() + "');",
+                Statement.RETURN_GENERATED_KEYS);) {
             if (!emailPattern.matcher(entity.getEmail()).matches()
                 || !phoneNumberPattern.matcher(entity.getPhoneNumber()).matches()) {
                 throw new SQLException("Input data doesn't match");
             }
 
-            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName + " VALUES ('"
-                            + entity.getFullName() + "', '" + entity.getEmail() + "', '" + entity.getPhoneNumber() + "');",
-                    Statement.RETURN_GENERATED_KEYS);
             pstmt.executeUpdate();
             logger.info("Saved " + entity);
         } catch (SQLException e) {
@@ -56,19 +55,19 @@ public class UserDao implements BaseDao<UserEntity, String> {
 
     @Override
     public void updateEntity(UserEntity entity, String email) {
-        try {
+        try(PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
+                        + "full_name = '" + entity.getFullName() + "', email = '" + entity.getEmail() + "', phone = '" + entity.getPhoneNumber() + "'" +
+                        " WHERE email = '" + email +"';",
+                Statement.RETURN_GENERATED_KEYS);) {
             if (!emailPattern.matcher(entity.getEmail()).matches()
                     || !phoneNumberPattern.matcher(entity.getPhoneNumber()).matches()
                     || !emailPattern.matcher(email).matches()) {
                 throw new SQLException("Input data doesn't match");
             }
 
-            PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
-                            + "full_name = '" + entity.getFullName() + "', email = '" + entity.getEmail() + "', phone = '" + entity.getPhoneNumber() + "'" +
-                            " WHERE email = '" + email +"';",
-                    Statement.RETURN_GENERATED_KEYS);
+
             pstmt.executeUpdate();
-            logger.info("Updated " + entity.getEmail());
+            logger.info("Updated " + entity);
         } catch (SQLException e) {
             logger.error(e);
         }
@@ -76,17 +75,17 @@ public class UserDao implements BaseDao<UserEntity, String> {
 
     @Override
     public void deleteEntity(UserEntity entity) {
-        try {
+        try(PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
+                        + "full_name = '" + entity.getFullName() + "'AND email = '" + entity.getEmail() + "'AND phone = '" + entity.getPhoneNumber() + "';",
+                Statement.RETURN_GENERATED_KEYS);) {
             if (!emailPattern.matcher(entity.getEmail()).matches()
                     || !phoneNumberPattern.matcher(entity.getPhoneNumber()).matches()) {
                 throw new SQLException("Input data doesn't match");
             }
 
-            PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
-                            + "full_name = '" + entity.getFullName() + "'AND email = '" + entity.getEmail() + "'AND phone = '" + entity.getPhoneNumber() + "';",
-                    Statement.RETURN_GENERATED_KEYS);
+
             pstmt.executeUpdate();
-            logger.info("Deleted " + entity.getEmail());
+            logger.info("Deleted " + entity);
         } catch (SQLException e) {
             logger.error(e);
         }

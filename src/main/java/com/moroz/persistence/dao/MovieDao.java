@@ -19,8 +19,8 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
     @Override
     public List<MovieEntity> findAll() {
         List<MovieEntity> movies = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
+        try(Statement statement = connection.createStatement();) {
+
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName + ";");
 
             while(resultSet.next()) {
@@ -37,10 +37,10 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
 
     @Override
     public void saveEntity(MovieEntity entity) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName
-                            + " (name) VALUES ('" + entity.getName() + "');",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName
+                        + " (name) VALUES ('" + entity.getName() + "');",
+                Statement.RETURN_GENERATED_KEYS);) {
+
             pstmt.executeUpdate();
             logger.info("Saved " + entity);
         } catch (SQLException e) {
@@ -50,10 +50,10 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
 
     @Override
     public void updateEntity(MovieEntity entity, Long id) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
-                            + "name = '" + entity.getName() + "' WHERE id = " + id + ";",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
+                        + "name = '" + entity.getName() + "' WHERE id = " + id + ";",
+                Statement.RETURN_GENERATED_KEYS);) {
+
             pstmt.executeUpdate();
             logger.info("Updated " + entity);
         } catch (SQLException e) {
@@ -63,10 +63,10 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
 
     @Override
     public void deleteEntity(MovieEntity entity) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
-                            + "name = '" + entity.getName() + "');",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
+                        + "name = '" + entity.getName() + "');",
+                Statement.RETURN_GENERATED_KEYS);) {
+
             pstmt.executeUpdate();
             logger.info("Deleted " + entity);
         } catch (SQLException e) {
@@ -85,10 +85,9 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
     }
 
     public void deleteById(long id) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
-                            + " id = " + id + ";",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
+                        + " id = " + id + ";",
+                Statement.RETURN_GENERATED_KEYS);) {
             pstmt.executeUpdate();
             logger.info("Deleted entity by id =" + id);
         } catch (SQLException e) {

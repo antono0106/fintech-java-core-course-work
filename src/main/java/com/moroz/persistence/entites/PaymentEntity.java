@@ -6,25 +6,22 @@ import com.moroz.persistence.enums.PaymentStatus;
  * @author : anton
  * @since : 01.02.2022, вт
  **/
-public class PaymentEntity implements Entity {
-    private String paymentCode;
+public class PaymentEntity extends AbstractEntity implements Entity {
+
     private int amount;
-    private long card;
+    private String card;
     private PaymentStatus status;
 
-    public PaymentEntity(String paymentCode, int amount, long card) {
-        this.paymentCode = paymentCode;
+    public PaymentEntity(int amount, String card) {
         this.amount = amount;
         this.card = card;
         this.status = PaymentStatus.NEW;
     }
 
-    public String getPaymentCode() {
-        return paymentCode;
-    }
-
-    public void setPaymentCode(String paymentCode) {
-        this.paymentCode = paymentCode;
+    public PaymentEntity(int amount, String card, PaymentStatus status) {
+        this.amount = amount;
+        this.card = card;
+        this.status = status;
     }
 
     public int getAmount() {
@@ -35,11 +32,11 @@ public class PaymentEntity implements Entity {
         this.amount = amount;
     }
 
-    public long getCard() {
+    public String getCard() {
         return card;
     }
 
-    public void setCard(long card) {
+    public void setCard(String card) {
         this.card = card;
     }
 

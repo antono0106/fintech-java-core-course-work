@@ -1,6 +1,9 @@
 package com.moroz.logging;
 
+import com.moroz.persistence.ConnectionUtil;
+
 import java.io.*;
+import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -22,9 +25,6 @@ public class CustomLogger {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            writer.close();
-        }));
     }
 
     private Class<?> clazz;
@@ -55,5 +55,10 @@ public class CustomLogger {
     public void warning(String warning) {
         writer.printf("%s WARNING FROM %s: %s \n", LocalDateTime.now(), clazz.getSimpleName(), warning);
         writer.flush();
+    }
+
+    public static void closeWriter() {
+        writer.printf("%s INFO FROM %s: %s \n", LocalDateTime.now(), CustomLogger.class.getSimpleName(),"Closed logger writer");
+        writer.close();
     }
 }

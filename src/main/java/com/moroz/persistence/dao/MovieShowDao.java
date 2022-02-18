@@ -25,8 +25,8 @@ public class MovieShowDao implements BaseDao<MovieShowEntity, Long> {
     @Override
     public List<MovieShowEntity> findAll() {
         List<MovieShowEntity> movieShowEntities = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
+        try(Statement statement = connection.createStatement();) {
+
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName +" AS ms "
                     + "LEFT JOIN movie m on m.id = ms.movie_id "
                     + "LEFT JOIN cinema c on c.id = ms.cinema_id;");
@@ -45,11 +45,11 @@ public class MovieShowDao implements BaseDao<MovieShowEntity, Long> {
 
     @Override
     public void saveEntity(MovieShowEntity entity) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName
-                            + " (movie_id, cinema_id, time, price) VALUES ('" + entity.getMovieEntity().getId() + ", " + entity.getCinemaEntity().getId()
-                            + ", " + entity.getTime()  + ", " + entity.getPrice() +"');",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName
+                        + " (movie_id, cinema_id, time, price) VALUES ('" + entity.getMovieEntity().getId() + ", " + entity.getCinemaEntity().getId()
+                        + ", " + entity.getTime()  + ", " + entity.getPrice() +"');",
+                Statement.RETURN_GENERATED_KEYS);) {
+
             pstmt.executeUpdate();
             logger.info("Saved " + entity);
         } catch (SQLException e) {
@@ -59,14 +59,14 @@ public class MovieShowDao implements BaseDao<MovieShowEntity, Long> {
 
     @Override
     public void updateEntity(MovieShowEntity entity, Long id) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
-                            + "movie_id = " + entity.getMovieEntity().getId() + ", "
-                            + "cinema_id =" + entity.getCinemaEntity().getId() + ", "
-                            + "time = '" + entity.getTime() + "', "
-                            + "price = " + entity.getPrice()
-                            + " WHERE id = " + id + ";",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
+                        + "movie_id = " + entity.getMovieEntity().getId() + ", "
+                        + "cinema_id =" + entity.getCinemaEntity().getId() + ", "
+                        + "time = '" + entity.getTime() + "', "
+                        + "price = " + entity.getPrice()
+                        + " WHERE id = " + id + ";",
+                Statement.RETURN_GENERATED_KEYS);) {
+
             pstmt.executeUpdate();
             logger.info("Updated " + entity);
         } catch (SQLException e) {
@@ -76,14 +76,14 @@ public class MovieShowDao implements BaseDao<MovieShowEntity, Long> {
 
     @Override
     public void deleteEntity(MovieShowEntity entity) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName
-                    + " WHERE "
-                    + "movie_id = " + entity.getMovieEntity().getId() + " AND "
-                    + "cinema_id = " + entity.getCinemaEntity().getId() + " AND "
-                    + "time = '" + entity.getTime() + "' AND "
-                    + "price = " + entity.getPrice() + ";",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName
+                        + " WHERE "
+                        + "movie_id = " + entity.getMovieEntity().getId() + " AND "
+                        + "cinema_id = " + entity.getCinemaEntity().getId() + " AND "
+                        + "time = '" + entity.getTime() + "' AND "
+                        + "price = " + entity.getPrice() + ";",
+                Statement.RETURN_GENERATED_KEYS);) {
+
             pstmt.executeUpdate();
             logger.info("Deleted " + entity);
         } catch (SQLException e) {
@@ -102,10 +102,10 @@ public class MovieShowDao implements BaseDao<MovieShowEntity, Long> {
     }
 
     public void deleteById(long id) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
-                            + " id = " + id + ";",
-                    Statement.RETURN_GENERATED_KEYS);
+        try(PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
+                        + " id = " + id + ";",
+                Statement.RETURN_GENERATED_KEYS);) {
+
             pstmt.executeUpdate();
             logger.info("Deleted entity by id =" + id);
         } catch (SQLException e) {

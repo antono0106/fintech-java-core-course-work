@@ -19,10 +19,6 @@ public class ConnectionUtil {
 
     static final CustomLogger logger = new CustomLogger(ConnectionUtil.class);
 
-    static {
-        Runtime.getRuntime().addShutdownHook(new Thread(ConnectionUtil::closeConnection));
-    }
-
     public static Connection getConnection() {
         if (connection == null) {
             try {
@@ -44,7 +40,7 @@ public class ConnectionUtil {
                 connection.close();
                 logger.info("Connection closed successfully");
             } catch (SQLException e) {
-                logger.error(Arrays.toString(e.getStackTrace()));
+                logger.error(String.join("\n",Arrays.toString(e.getStackTrace())));
             }
         }
     }
