@@ -3,6 +3,7 @@ package com.moroz.persistence.entites;
 import com.moroz.persistence.enums.TicketStatus;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @author : anton
@@ -87,5 +88,31 @@ public class TicketEntity implements Entity {
 
     public void setPaymentEntity(PaymentEntity paymentEntity) {
         this.paymentEntity = paymentEntity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TicketEntity that = (TicketEntity) o;
+        return row == that.row && place == that.place && Objects.equals(movieShowEntity, that.movieShowEntity) && status == that.status && Objects.equals(dateOfCreation, that.dateOfCreation) && Objects.equals(dateOfStatusModification, that.dateOfStatusModification) && Objects.equals(paymentEntity, that.paymentEntity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(movieShowEntity, row, place, status, dateOfCreation, dateOfStatusModification, paymentEntity);
+    }
+
+    @Override
+    public String toString() {
+        return "TicketEntity{" +
+                "movieShowEntity=" + movieShowEntity +
+                ", row=" + row +
+                ", place=" + place +
+                ", status=" + status +
+                ", dateOfCreation=" + dateOfCreation +
+                ", dateOfStatusModification=" + dateOfStatusModification +
+                ", paymentEntity=" + paymentEntity +
+                '}';
     }
 }

@@ -30,7 +30,7 @@ public class Dispatcher {
         try (Stream<String> lines = Files.lines(Paths.get(argsHandler.getFile().getAbsolutePath()))) {
             LinesHandler linesHandler = new LinesHandler(lines.collect(Collectors.toList()));
             linesHandler.handle();
-        } catch(IOException | NoSplitterException e) {
+        } catch(Exception e) {
             logger.error(e);
         }
     }

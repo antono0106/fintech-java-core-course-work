@@ -7,7 +7,7 @@ import com.moroz.persistence.entites.UserEntity;
  * @author : anton
  * @since : 14.02.2022, пн
  **/
-public class UserService {
+public class UserService implements Service<UserEntity> {
     private final UserDao userDao;
 
     public UserService() {
@@ -18,7 +18,8 @@ public class UserService {
         return userDao;
     }
 
-    public void register(UserEntity entity) {
+    @Override
+    public void create(UserEntity entity) {
         userDao.saveEntity(entity);
     }
 }

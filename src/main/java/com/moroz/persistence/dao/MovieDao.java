@@ -84,6 +84,16 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
         throw new RuntimeException("Entity not found");
     }
 
+    public MovieEntity findByName(String name) {
+        for (MovieEntity e: findAll()) {
+            if (e.getName().equals(name)) {
+                logger.info("Found " + e);
+                return e;
+            }
+        }
+        throw new RuntimeException("Entity not found");
+    }
+
     public void deleteById(long id) {
         try(PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
                         + " id = " + id + ";",

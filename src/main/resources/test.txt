@@ -1,1 +1,8 @@
 REGISTER|Moroz Anton Dmitrievic|antoshk@gmail.com|0676333355
+CREATE_CINEMA|some cinema
+CREATE_CINEMA|some cinema 2|10|10
+CREATE_CINEMA|some cinema 3|15|15
+CREATE_MOVIE|some movie
+CREATE_MOVIE|some movie1
+CREATE_MOVIE|some movie2
+CREATE_MOVIE_SHOW|some cinema 2

@@ -2,6 +2,8 @@ package com.moroz.persistence.entites;
 
 import com.moroz.persistence.enums.PaymentStatus;
 
+import java.util.Objects;
+
 /**
  * @author : anton
  * @since : 01.02.2022, вт
@@ -46,5 +48,27 @@ public class PaymentEntity extends AbstractEntity implements Entity {
 
     public void setStatus(PaymentStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PaymentEntity that = (PaymentEntity) o;
+        return amount == that.amount && Objects.equals(card, that.card) && status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(amount, card, status);
+    }
+
+    @Override
+    public String toString() {
+        return "PaymentEntity{" +
+                "amount=" + amount +
+                ", card='" + card + '\'' +
+                ", status=" + status +
+                '}';
     }
 }
