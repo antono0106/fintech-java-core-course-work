@@ -70,7 +70,7 @@ public class TicketDao implements BaseDao<TicketEntity, Long> {
     public void saveEntity(TicketEntity entity) {
         try(PreparedStatement pstmt = connection.prepareStatement("INSERT INTO ticket (movie_show_id, row, place)\n" +
                         "SELECT " + entity.getMovieShowEntity().getId()  + ", " + entity.getRow() + ", " + entity.getPlace() +
-                        " WHERE NOT EXISTS(SELECT * FROM ticket WHERE row = " + entity.getRow() + " AND place = " + entity.getPlace() +");",
+                        " WHERE NOT EXISTS(SELECT * FROM ticket WHERE movie_show_id = " + entity.getMovieShowEntity().getId() + " AND row = " + entity.getRow() + " AND place = " + entity.getPlace() +");",
                 Statement.RETURN_GENERATED_KEYS);) {
 
             for (int i = 0; i < findAll().size(); i++) {

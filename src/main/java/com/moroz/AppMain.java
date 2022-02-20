@@ -17,7 +17,6 @@ public class AppMain {
 
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            logger.printPlacesOccupancy(CommandsHandler.getPlacesOccupancies());
             logger.info("Closing connection and logger writer...");
             ConnectionUtil.closeConnection();
             CustomLogger.closeWriter();

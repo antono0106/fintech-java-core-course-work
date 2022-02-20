@@ -48,6 +48,8 @@ public class MovieShowEntity extends AbstractEntity implements Entity {
         return price;
     }
 
+
+
     @Override
     public String toString() {
         return "MovieShowEntity{" +
@@ -58,16 +60,5 @@ public class MovieShowEntity extends AbstractEntity implements Entity {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MovieShowEntity that = (MovieShowEntity) o;
-        return price == that.price && Objects.equals(movieEntity, that.movieEntity) && Objects.equals(cinemaEntity, that.cinemaEntity) && Objects.equals(time, that.time);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(movieEntity, cinemaEntity, time, price);
-    }
 }

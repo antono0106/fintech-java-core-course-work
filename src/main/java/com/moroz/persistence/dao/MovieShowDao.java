@@ -93,6 +93,17 @@ public class MovieShowDao implements BaseDao<MovieShowEntity, Long> {
         }
     }
 
+    public MovieShowEntity findByMovieAndCinemaAndTime(MovieEntity movieEntity, CinemaEntity cinemaEntity, LocalTime localTime) {
+        for (MovieShowEntity e: findAll()) {
+            if (e.getMovieEntity().getId() == movieEntity.getId() && e.getCinemaEntity().getId() == cinemaEntity.getId()
+            && e.getTime().equals(localTime)) {
+                logger.info("Found " + e);
+                return e;
+            }
+        }
+        throw new EntityNotFoundException("Entity not found");
+    }
+
     public MovieShowEntity findById(long id) {
         for (MovieShowEntity e: findAll()) {
             if (e.getId() == id) {
