@@ -54,7 +54,7 @@ public class PaymentDao implements BaseDao<PaymentEntity, Long> {
     @Override
     public void saveEntity(PaymentEntity entity) {
         try(PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName + " (amount, card) VALUES ('"
-                        + entity.getAmount() + "', '" + entity.getAmount() + "');",
+                        + entity.getAmount() + "', '" + entity.getCard() + "');",
                 Statement.RETURN_GENERATED_KEYS);) {
 
             if (!creditCardRegex.matcher(entity.getCard()).matches()) {

@@ -95,12 +95,12 @@ public class TicketEntity implements Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TicketEntity that = (TicketEntity) o;
-        return row == that.row && place == that.place && Objects.equals(movieShowEntity, that.movieShowEntity) && status == that.status && Objects.equals(dateOfCreation, that.dateOfCreation) && Objects.equals(dateOfStatusModification, that.dateOfStatusModification) && Objects.equals(paymentEntity, that.paymentEntity);
+        return row == that.row && place == that.place;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(movieShowEntity, row, place, status, dateOfCreation, dateOfStatusModification, paymentEntity);
+        return Objects.hash(row, place);
     }
 
     @Override

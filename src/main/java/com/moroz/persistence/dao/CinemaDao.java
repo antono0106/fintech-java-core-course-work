@@ -81,17 +81,18 @@ public class CinemaDao implements BaseDao<CinemaEntity, Long> {
         return cinemaEntities;
     }
 
-    public void initPlacesOccupancy(List<TicketEntity> ticketEntities) {
+    /*public void initPlacesOccupancy(List<TicketEntity> ticketEntities) {
         findAll();
 
-        for (CinemaEntity cinemaEntity : cinemaEntities) {
-            for (TicketEntity t : ticketEntities) {
-                if (!t.getStatus().equals(TicketStatus.FAILED)) {
-                    cinemaEntity.takePlace(t.getRow(), t.getPlace());
+        for (TicketEntity t : ticketEntities) {
+            for (CinemaEntity c: cinemaEntities) {
+                if (!t.getStatus().equals(TicketStatus.FAILED) && c.equals(t.getMovieShowEntity().getCinemaEntity()) && !c.getPlacesOccupancy()[t.getRow() - 1][t.getPlace() - 1]) {
+                    t.getMovieShowEntity().getCinemaEntity().takePlace(t.getRow(), t.getPlace());
                 }
             }
         }
-    }
+
+    }*/
 
     @Override
     public void deleteEntity(CinemaEntity entity) {

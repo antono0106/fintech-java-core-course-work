@@ -47,7 +47,7 @@ public class TicketDao implements BaseDao<TicketEntity, Long> {
                 PaymentEntity paymentEntity = null;
 
                 for (PaymentEntity pEntity: paymentDao.findAll()) {
-                    if (pEntity.getId() == Integer.parseInt(resultSet.getString("payment_id"))) {
+                    if (resultSet.getString("payment_id") != null && pEntity.getId() == Integer.parseInt(resultSet.getString("payment_id"))) {
                         paymentEntity = paymentDao.findById(pEntity.getId());
                     }
                 }
@@ -68,9 +68,16 @@ public class TicketDao implements BaseDao<TicketEntity, Long> {
 
     @Override
     public void saveEntity(TicketEntity entity) {
-        try(PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName + "(movie_show_id, row, place) VALUES ('"
-                        + entity.getMovieShowEntity().getId() + "', '" + entity.getRow() + "', '" + entity.getPlace() + "');",
+        try(PreparedStatement pstmt = connection.prepareStatement("INSERT INTO ticket (movie_show_id, row, place)\n" +
+                        "SELECT " + entity.getMovieShowEntity().getId()  + ", " + entity.getRow() + ", " + entity.getPlace() +
+                        " WHERE NOT EXISTS(SELECT * FROM ticket WHERE row = " + entity.getRow() + " AND place = " + entity.getPlace() +");",
                 Statement.RETURN_GENERATED_KEYS);) {
+
+            for (int i = 0; i < findAll().size(); i++) {
+                if (entity.equals(findAll().get(i))) {
+                    throw new SQLException("Cant create entity: row and place are already occupied");
+                }
+            }
 
             pstmt.executeUpdate();
             logger.info("Saved " + entity);

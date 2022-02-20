@@ -7,13 +7,11 @@ import com.moroz.exceptions.TooMuchArgsException;
 import com.moroz.logging.CustomLogger;
 import com.moroz.persistence.entites.*;
 import com.moroz.persistence.notdbentities.PlacesOccupancy;
+import com.moroz.randomgenerator.RandomCreditCardNumberGenerator;
 import com.moroz.service.*;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author : anton
@@ -89,28 +87,45 @@ public class CommandsHandler {
                 try {
                     TicketService ticketService = new TicketService();
                     CinemaService cinemaService = new CinemaService();
-                    cinemaService.initPlacesOccupancy(ticketService.findAll());
 
                     MovieShowService movieShowService = new MovieShowService();
                     int row = Integer.parseInt(splitter[2]);
                     int place = Integer.parseInt(splitter[3]);
 
-                    if (movieShowService.findById(Integer.parseInt(splitter[1]))
-                            .getCinemaEntity().getPlacesOccupancy()[row - 1][place - 1]) {
-                        logger.error("Place in row " + row + " and under number " + place + " is already taken");
+                    if (row <= 0 || place <= 0) {
+                        logger.error("Cant create ticket entity: row or place cannot be less than 0");
                         continue;
                     }
 
                     TicketEntity ticketEntity = new TicketEntity(movieShowService.findById(Integer.parseInt(splitter[1])), Integer.parseInt(splitter[2]), Integer.parseInt(splitter[3]));
 
-                    ticketService.create(ticketEntity);
-                    cinemaService.initPlacesOccupancy(ticketService.findAll());
-
-                    for (CinemaEntity cinemaEntity: cinemaService.getAllPlacesOccupancy()) {
-                        placesOccupancies.add(new PlacesOccupancy(cinemaEntity.getName(), cinemaEntity.getPlacesOccupancy()));
+                    boolean flag = false;
+                    for (TicketEntity item: ticketService.findAll()) {
+                        if (item.equals(ticketEntity)) {
+                            logger.error("Cant create ticket entity: place is already taken");
+                            flag = true;
+                            break;
+                        }
                     }
 
-                } catch (EntityNotFoundException e) {
+                    if (flag) {
+                        continue;
+                    }
+
+
+                    ticketService.create(ticketEntity);
+/*
+                    cinemaService.initPlacesOccupancy(ticketService.findAll());
+*/
+
+                    /*for (CinemaEntity cinemaEntity: cinemaService.getAllPlacesOccupancy()) {
+                        placesOccupancies.add(new PlacesOccupancy(cinemaEntity.getName(), cinemaEntity.getPlacesOccupancy()));
+                    }*/
+
+                    PaymentService paymentService = new PaymentService();
+                    paymentService.create(new PaymentEntity(new Random().nextInt(300 - 50) + 50, RandomCreditCardNumberGenerator.getRandomCard()));
+
+                } catch (EntityNotFoundException  | NumberFormatException e) {
                     logger.error(e);
                 }
             } else {

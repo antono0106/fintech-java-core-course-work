@@ -39,7 +39,7 @@ public class CinemaService implements Service<CinemaEntity> {
         return cinemaDao.findByName(name);
     }
 
-    public void initPlacesOccupancy(List<TicketEntity> ticketEntities) {
+   /* public void initPlacesOccupancy(List<TicketEntity> ticketEntities) {
         cinemaDao.initPlacesOccupancy(ticketEntities);
-    }
+    }*/
 }
