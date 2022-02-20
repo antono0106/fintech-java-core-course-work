@@ -7,10 +7,13 @@ import com.moroz.persistence.entites.*;
 import com.moroz.persistence.enums.TicketStatus;
 import com.moroz.randomgenerator.RandomCreditCardNumberGenerator;
 import com.moroz.service.*;
+import com.moroz.service.statusprocessors.PaymentStatusTask;
+import com.moroz.service.statusprocessors.TicketStatusTask;
 
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
 
 /**
  * @author : anton
@@ -21,12 +24,20 @@ public class CommandsHandler {
 
     private List<String> fileLines;
 
+
     public CommandsHandler(List<String> fileLines) {
         this.fileLines = fileLines;
     }
 
     public void handle() {
         logger.info("Processing lines...");
+
+        Timer paymentTimer = new Timer(true);
+        paymentTimer.scheduleAtFixedRate(new PaymentStatusTask(), 2000, 2000);
+
+        Timer ticketTimer = new Timer(true);
+        ticketTimer.scheduleAtFixedRate(new TicketStatusTask(), 2000, 2000);
+
         for (String line : fileLines) {
             if (!line.contains("|")) {
                 logger.error("No \"|\" splitter in line");
@@ -141,6 +152,12 @@ public class CommandsHandler {
                     ticketEntity.setPaymentEntity(paymentService.getLastPayment());
 
                     ticketService.updateStatus(ticketEntity, TicketStatus.PROCESSING);
+
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        logger.error(e);
+                    }
                 } catch (EntityNotFoundException  | NumberFormatException e) {
                     logger.error(e);
                 }
@@ -148,5 +165,6 @@ public class CommandsHandler {
                 logger.error("No such command called " + splitter[0]);
             }
         }
+
     }
 }

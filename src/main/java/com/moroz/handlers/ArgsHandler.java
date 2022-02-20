@@ -31,6 +31,8 @@ public class ArgsHandler {
 
         if (!new File(fileName).isFile() || !new File(fileName).exists()) {
             throw new IOException("The arg is not a file or file does not exist");
+        } else if(!fileName.endsWith(".txt")) {
+            throw new UnsupportedFileExtension("Unsupported file extension called " + fileName.substring('.'));
         } else {
             file = new File(fileName);
         }

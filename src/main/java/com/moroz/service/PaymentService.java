@@ -2,6 +2,9 @@ package com.moroz.service;
 
 import com.moroz.persistence.dao.PaymentDao;
 import com.moroz.persistence.entites.PaymentEntity;
+import com.moroz.persistence.enums.PaymentStatus;
+
+import java.util.List;
 
 /**
  * @author : anton
@@ -21,6 +24,14 @@ public class PaymentService implements Service<PaymentEntity> {
 
     public PaymentEntity getLastPayment() {
         return paymentDao.findAll().get(paymentDao.findAll().size() - 1);
+    }
+
+    public List<PaymentEntity> findAll() {
+        return paymentDao.findAll();
+    }
+
+    public void updateStatus(PaymentEntity entity, PaymentStatus status) {
+        paymentDao.updateStatus(entity, status);
     }
 
     public PaymentEntity findById(long id) {

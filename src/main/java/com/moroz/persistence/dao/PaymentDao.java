@@ -116,14 +116,14 @@ public class PaymentDao implements BaseDao<PaymentEntity, Long> {
         throw new EntityNotFoundException("Entity not found");
     }
 
-    public void updateStatus(PaymentStatus from, PaymentStatus to) {
+    public void updateStatus(PaymentEntity entity, PaymentStatus paymentStatus) {
         try(PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
-                        + " status_id = " + to.getId()  +
-                        " WHERE status_id = " + from.getId() +";",
+                        + " status_id = " + paymentStatus.getId()  +
+                        " WHERE status_id = " + entity.getStatus().getId() +";",
                 Statement.RETURN_GENERATED_KEYS);) {
 
             pstmt.executeUpdate();
-            logger.info("Updated entities status from  " + from + " to " + to);
+            logger.info("Updated" + entity + " status to  "  + paymentStatus.getName());
         } catch (SQLException e) {
             logger.error(e);
         }
