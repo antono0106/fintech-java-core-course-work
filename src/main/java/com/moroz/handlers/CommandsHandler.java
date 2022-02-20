@@ -4,6 +4,7 @@ import com.moroz.commands.FileCommands;
 import com.moroz.exceptions.EntityNotFoundException;
 import com.moroz.logging.CustomLogger;
 import com.moroz.persistence.entites.*;
+import com.moroz.persistence.enums.TicketStatus;
 import com.moroz.randomgenerator.RandomCreditCardNumberGenerator;
 import com.moroz.service.*;
 
@@ -119,7 +120,8 @@ public class CommandsHandler {
 
                     boolean flag = false;
                     for (TicketEntity item: ticketService.findAll()) {
-                        if (item.equals(ticketEntity)) {
+                        if (item.getMovieShowEntity().getId() == ticketEntity.getMovieShowEntity().getId()
+                        && item.getRow() == ticketEntity.getRow() && item.getPlace() == ticketEntity.getPlace()) {
                             logger.error("Cant create ticket entity: place is already taken");
                             flag = true;
                             break;
@@ -133,8 +135,12 @@ public class CommandsHandler {
                     ticketService.create(ticketEntity);
 
                     PaymentService paymentService = new PaymentService();
-                    paymentService.create(new PaymentEntity(new Random().nextInt(300 - 50) + 50, RandomCreditCardNumberGenerator.getRandomCard()));
+                    PaymentEntity paymentEntity = new PaymentEntity(new Random().nextInt(300 - 50) + 50, RandomCreditCardNumberGenerator.getRandomCard());
+                    paymentService.create(paymentEntity);
 
+                    ticketEntity.setPaymentEntity(paymentService.getLastPayment());
+
+                    ticketService.updateStatus(ticketEntity, TicketStatus.PROCESSING);
                 } catch (EntityNotFoundException  | NumberFormatException e) {
                     logger.error(e);
                 }

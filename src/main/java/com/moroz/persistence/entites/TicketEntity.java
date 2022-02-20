@@ -90,18 +90,6 @@ public class TicketEntity implements Entity {
         this.paymentEntity = paymentEntity;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TicketEntity that = (TicketEntity) o;
-        return row == that.row && place == that.place && Objects.equals(movieShowEntity, that.movieShowEntity);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(movieShowEntity, row, place);
-    }
 
     @Override
     public String toString() {

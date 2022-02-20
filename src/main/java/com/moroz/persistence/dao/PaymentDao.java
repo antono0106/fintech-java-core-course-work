@@ -40,10 +40,13 @@ public class PaymentDao implements BaseDao<PaymentEntity, Long> {
                     }
                 }
 
-                payments.add(new PaymentEntity(
+                PaymentEntity paymentEntity = new PaymentEntity(
                         resultSet.getInt("amount"),
                         resultSet.getString("card"),
-                        paymentStatus));
+                        paymentStatus);
+                paymentEntity.setId(resultSet.getInt("id"));
+
+                payments.add(paymentEntity);
             }
         } catch (SQLException e) {
             logger.error(e);

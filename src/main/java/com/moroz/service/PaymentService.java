@@ -19,6 +19,10 @@ public class PaymentService implements Service<PaymentEntity> {
         paymentDao.saveEntity(entity);
     }
 
+    public PaymentEntity getLastPayment() {
+        return paymentDao.findAll().get(paymentDao.findAll().size() - 1);
+    }
+
     public PaymentEntity findById(long id) {
         return null;
     }

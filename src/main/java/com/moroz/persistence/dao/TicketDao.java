@@ -9,6 +9,7 @@ import com.moroz.persistence.enums.PaymentStatus;
 import com.moroz.persistence.enums.TicketStatus;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +109,19 @@ public class TicketDao implements BaseDao<TicketEntity, Long> {
 
             pstmt.executeUpdate();
             logger.info("Deleted " + entity);
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+    }
+
+    public void updateStatus(TicketEntity entity, TicketStatus ticketStatus) {
+        try(PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
+                        + "status_id = '" + ticketStatus.getId() + "', modification_date = '" + LocalDateTime.now() + "'" + ", payment_id = '" + entity.getPaymentEntity().getId() + "' "
+                        +" WHERE status_id = '" + entity.getStatus().getId() +"' AND movie_show_id = " + entity.getMovieShowEntity().getId() + ";",
+                Statement.RETURN_GENERATED_KEYS);) {
+
+            pstmt.executeUpdate();
+            logger.info("Updated " + entity);
         } catch (SQLException e) {
             logger.error(e);
         }

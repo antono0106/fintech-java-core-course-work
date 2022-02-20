@@ -2,6 +2,7 @@ package com.moroz.service;
 
 import com.moroz.persistence.dao.TicketDao;
 import com.moroz.persistence.entites.TicketEntity;
+import com.moroz.persistence.enums.TicketStatus;
 
 import java.util.List;
 import java.util.Set;
@@ -31,6 +32,10 @@ public class TicketService implements Service<TicketEntity> {
 
     public List<TicketEntity> findAll() {
         return ticketDao.findAll();
+    }
+
+    public void updateStatus(TicketEntity entity, TicketStatus status) {
+        ticketDao.updateStatus(entity, status);
     }
 
     public TicketEntity findById(long id) {
