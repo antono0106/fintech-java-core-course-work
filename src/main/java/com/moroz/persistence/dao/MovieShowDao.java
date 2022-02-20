@@ -35,8 +35,9 @@ public class MovieShowDao implements BaseDao<MovieShowEntity, Long> {
             while(resultSet.next()) {
                 MovieEntity movieEntity = movieDao.findById(resultSet.getInt("m_id"));
                 CinemaEntity cinemaEntity = cinemaDao.findById(resultSet.getInt("c_id"));
-
-                movieShowEntities.add(new MovieShowEntity(movieEntity, cinemaEntity, resultSet.getTime("time").toLocalTime(), resultSet.getInt("price")));
+                MovieShowEntity movieShowEntity = new MovieShowEntity(movieEntity, cinemaEntity, resultSet.getTime("time").toLocalTime(), resultSet.getInt("price"));
+                movieShowEntity.setId(resultSet.getInt("id"));
+                movieShowEntities.add(movieShowEntity);
             }
         } catch (SQLException e) {
             logger.error(e);

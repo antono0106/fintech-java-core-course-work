@@ -63,7 +63,7 @@ public class CustomLogger {
         for (PlacesOccupancy placeOccupancy: placesOccupancies) {
             writer.println(placeOccupancy.getCinemaName());
             for (int i = 0; i < placeOccupancy.getPlacesOccupancy().length; i++) {
-                String rowOccupancy = Arrays.toString(placeOccupancy.getPlacesOccupancy()[i]).replaceAll("true", "1");
+                String rowOccupancy = Arrays.toString(placeOccupancy.getPlacesOccupancy()[i]).replaceAll("true", "1").replaceAll("false", "0");
                 writer.println(rowOccupancy);
             }
         }

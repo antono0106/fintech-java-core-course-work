@@ -1,1 +1,2 @@
 CREATE_MOVIE_SHOW|some movie2|some cinema 3|00:00:00|100
+BUY_TICKET|1000002|1|1

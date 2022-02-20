@@ -90,8 +90,20 @@ public class CommandsHandler {
                     TicketService ticketService = new TicketService();
                     CinemaService cinemaService = new CinemaService();
                     cinemaService.initPlacesOccupancy(ticketService.findAll());
+
                     MovieShowService movieShowService = new MovieShowService();
-                    ticketService.create(new TicketEntity(movieShowService.findById(Integer.parseInt(splitter[1])), Integer.parseInt(splitter[2]), Integer.parseInt(splitter[3])));
+                    int row = Integer.parseInt(splitter[2]);
+                    int place = Integer.parseInt(splitter[3]);
+
+                    if (movieShowService.findById(Integer.parseInt(splitter[1]))
+                            .getCinemaEntity().getPlacesOccupancy()[row - 1][place - 1]) {
+                        logger.error("Place in row " + row + " and under number " + place + " is already taken");
+                        continue;
+                    }
+
+                    TicketEntity ticketEntity = new TicketEntity(movieShowService.findById(Integer.parseInt(splitter[1])), Integer.parseInt(splitter[2]), Integer.parseInt(splitter[3]));
+
+                    ticketService.create(ticketEntity);
                     cinemaService.initPlacesOccupancy(ticketService.findAll());
 
                     for (CinemaEntity cinemaEntity: cinemaService.getAllPlacesOccupancy()) {
