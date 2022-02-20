@@ -1,5 +1,6 @@
 package com.moroz.persistence.dao;
 
+import com.moroz.exceptions.EntityNotFoundException;
 import com.moroz.persistence.ConnectionUtil;
 import com.moroz.persistence.entites.UserEntity;
 
@@ -98,7 +99,7 @@ public class UserDao implements BaseDao<UserEntity, String> {
                 return e;
             }
         }
-        throw new RuntimeException("Entity not found");
+        throw new EntityNotFoundException("Entity not found");
     }
 
     public void deleteByEmail(String email) {
@@ -108,7 +109,7 @@ public class UserDao implements BaseDao<UserEntity, String> {
                 break;
             }
         }
-        throw new RuntimeException("Entity not found");
+        throw new EntityNotFoundException("Entity not found");
     }
 
 }

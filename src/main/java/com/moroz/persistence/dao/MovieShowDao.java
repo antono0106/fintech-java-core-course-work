@@ -28,12 +28,12 @@ public class MovieShowDao implements BaseDao<MovieShowEntity, Long> {
         try(Statement statement = connection.createStatement();) {
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName +" AS ms "
-                    + "LEFT JOIN movie m on m.id = ms.movie_id "
-                    + "LEFT JOIN cinema c on c.id = ms.cinema_id;");
+                    + "LEFT JOIN movie m on m.m_id = ms.movie_id "
+                    + "LEFT JOIN cinema c on c.c_id = ms.cinema_id;");
 
             while(resultSet.next()) {
-                MovieEntity movieEntity = movieDao.findById(resultSet.getInt("m.id"));
-                CinemaEntity cinemaEntity = cinemaDao.findById(resultSet.getInt("c.id"));
+                MovieEntity movieEntity = movieDao.findById(resultSet.getInt("m_id"));
+                CinemaEntity cinemaEntity = cinemaDao.findById(resultSet.getInt("c_id"));
 
                 movieShowEntities.add(new MovieShowEntity(movieEntity, cinemaEntity, resultSet.getTime("time").toLocalTime(), resultSet.getInt("price")));
             }
