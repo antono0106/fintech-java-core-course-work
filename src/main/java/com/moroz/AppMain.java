@@ -3,6 +3,7 @@ package com.moroz;
 import com.moroz.dispatcher.Dispatcher;
 import com.moroz.exceptions.NotEnoughArgsException;
 import com.moroz.exceptions.TooMuchArgsException;
+import com.moroz.handlers.CommandsHandler;
 import com.moroz.logging.CustomLogger;
 import com.moroz.persistence.ConnectionUtil;
 
@@ -16,6 +17,7 @@ public class AppMain {
 
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            logger.printPlacesOccupancy(CommandsHandler.getPlacesOccupancies());
             logger.info("Closing connection and logger writer...");
             ConnectionUtil.closeConnection();
             CustomLogger.closeWriter();

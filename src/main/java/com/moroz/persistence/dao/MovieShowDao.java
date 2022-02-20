@@ -1,5 +1,6 @@
 package com.moroz.persistence.dao;
 
+import com.moroz.exceptions.EntityNotFoundException;
 import com.moroz.persistence.ConnectionUtil;
 import com.moroz.persistence.entites.CinemaEntity;
 import com.moroz.persistence.entites.MovieEntity;
@@ -46,8 +47,8 @@ public class MovieShowDao implements BaseDao<MovieShowEntity, Long> {
     @Override
     public void saveEntity(MovieShowEntity entity) {
         try(PreparedStatement pstmt = connection.prepareStatement("INSERT INTO " + tableName
-                        + " (movie_id, cinema_id, time, price) VALUES ('" + entity.getMovieEntity().getId() + ", " + entity.getCinemaEntity().getId()
-                        + ", " + entity.getTime()  + ", " + entity.getPrice() +"');",
+                        + " (movie_id, cinema_id, time, price) VALUES (" + entity.getMovieEntity().getId() + ", " + entity.getCinemaEntity().getId()
+                        + ", '" + entity.getTime()  + "', " + entity.getPrice() +");",
                 Statement.RETURN_GENERATED_KEYS);) {
 
             pstmt.executeUpdate();
@@ -98,7 +99,7 @@ public class MovieShowDao implements BaseDao<MovieShowEntity, Long> {
                 return e;
             }
         }
-        throw new RuntimeException("Entity not found");
+        throw new EntityNotFoundException("Entity not found");
     }
 
     public void deleteById(long id) {

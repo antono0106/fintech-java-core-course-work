@@ -1,5 +1,6 @@
 package com.moroz.persistence.dao;
 
+import com.moroz.exceptions.EntityNotFoundException;
 import com.moroz.persistence.ConnectionUtil;
 import com.moroz.persistence.entites.PaymentEntity;
 import com.moroz.persistence.entites.UserEntity;
@@ -109,7 +110,7 @@ public class PaymentDao implements BaseDao<PaymentEntity, Long> {
                 return e;
             }
         }
-        throw new RuntimeException("Entity not found");
+        throw new EntityNotFoundException("Entity not found");
     }
 
     public void updateStatus(PaymentStatus from, PaymentStatus to) {

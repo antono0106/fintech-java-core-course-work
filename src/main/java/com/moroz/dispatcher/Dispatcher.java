@@ -1,10 +1,9 @@
 package com.moroz.dispatcher;
 
-import com.moroz.exceptions.NoSplitterException;
 import com.moroz.exceptions.NotEnoughArgsException;
 import com.moroz.exceptions.TooMuchArgsException;
 import com.moroz.handlers.ArgsHandler;
-import com.moroz.handlers.LinesHandler;
+import com.moroz.handlers.CommandsHandler;
 import com.moroz.logging.CustomLogger;
 
 import java.io.IOException;
@@ -28,8 +27,8 @@ public class Dispatcher {
 
     public void dispatch() {
         try (Stream<String> lines = Files.lines(Paths.get(argsHandler.getFile().getAbsolutePath()))) {
-            LinesHandler linesHandler = new LinesHandler(lines.collect(Collectors.toList()));
-            linesHandler.handle();
+            CommandsHandler commandsHandler = new CommandsHandler(lines.collect(Collectors.toList()));
+            commandsHandler.handle();
         } catch(Exception e) {
             logger.error(e);
         }

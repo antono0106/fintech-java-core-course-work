@@ -1,11 +1,13 @@
 package com.moroz.logging;
 
 import com.moroz.persistence.ConnectionUtil;
+import com.moroz.persistence.notdbentities.PlacesOccupancy;
 
 import java.io.*;
 import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author : anton
@@ -54,6 +56,17 @@ public class CustomLogger {
 
     public void warning(String warning) {
         writer.printf("%s WARNING FROM %s: %s \n", LocalDateTime.now(), clazz.getSimpleName(), warning);
+        writer.flush();
+    }
+
+    public void printPlacesOccupancy(List<PlacesOccupancy> placesOccupancies) {
+        for (PlacesOccupancy placeOccupancy: placesOccupancies) {
+            writer.println(placeOccupancy.getCinemaName());
+            for (int i = 0; i < placeOccupancy.getPlacesOccupancy().length; i++) {
+                String rowOccupancy = Arrays.toString(placeOccupancy.getPlacesOccupancy()[i]).replaceAll("true", "1");
+                writer.println(rowOccupancy);
+            }
+        }
         writer.flush();
     }
 

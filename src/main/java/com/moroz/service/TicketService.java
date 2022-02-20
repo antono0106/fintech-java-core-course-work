@@ -3,6 +3,8 @@ package com.moroz.service;
 import com.moroz.persistence.dao.TicketDao;
 import com.moroz.persistence.entites.TicketEntity;
 
+import java.util.List;
+
 /**
  * @author : anton
  * @since : 19.02.2022, сб
@@ -24,6 +26,10 @@ public class TicketService implements Service<TicketEntity> {
     @Override
     public void create(TicketEntity entity) {
         ticketDao.saveEntity(entity);
+    }
+
+    public List<TicketEntity> findAll() {
+        return ticketDao.findAll();
     }
 
     public TicketEntity findById(long id) {

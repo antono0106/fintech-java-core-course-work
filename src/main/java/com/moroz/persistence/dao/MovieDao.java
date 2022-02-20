@@ -1,5 +1,6 @@
 package com.moroz.persistence.dao;
 
+import com.moroz.exceptions.EntityNotFoundException;
 import com.moroz.persistence.ConnectionUtil;
 import com.moroz.persistence.entites.CinemaEntity;
 import com.moroz.persistence.entites.MovieEntity;
@@ -13,7 +14,7 @@ import java.util.List;
  * @since : 15.02.2022, вт
  **/
 public class MovieDao implements BaseDao<MovieEntity, Long> {
-    private final String tableName = "cinema";
+    private final String tableName = "movie";
     private final Connection connection = ConnectionUtil.getConnection();
 
     @Override
@@ -26,7 +27,7 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
             while(resultSet.next()) {
                 MovieEntity movieEntity = new MovieEntity(
                         resultSet.getString("name"));
-                movieEntity.setId(resultSet.getInt("id"));
+                movieEntity.setId(resultSet.getInt("m_id"));
                 movies.add(movieEntity);
             }
         } catch (SQLException e) {
@@ -51,7 +52,7 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
     @Override
     public void updateEntity(MovieEntity entity, Long id) {
         try(PreparedStatement pstmt = connection.prepareStatement("UPDATE " + tableName + " SET "
-                        + "name = '" + entity.getName() + "' WHERE id = " + id + ";",
+                        + "name = '" + entity.getName() + "' WHERE m_id = " + id + ";",
                 Statement.RETURN_GENERATED_KEYS);) {
 
             pstmt.executeUpdate();
@@ -81,7 +82,7 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
                 return e;
             }
         }
-        throw new RuntimeException("Entity not found");
+        throw new EntityNotFoundException("Entity not found");
     }
 
     public MovieEntity findByName(String name) {
@@ -91,12 +92,12 @@ public class MovieDao implements BaseDao<MovieEntity, Long> {
                 return e;
             }
         }
-        throw new RuntimeException("Entity not found");
+        throw new EntityNotFoundException("Entity not found");
     }
 
     public void deleteById(long id) {
         try(PreparedStatement pstmt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE "
-                        + " id = " + id + ";",
+                        + " m_id = " + id + ";",
                 Statement.RETURN_GENERATED_KEYS);) {
             pstmt.executeUpdate();
             logger.info("Deleted entity by id =" + id);
