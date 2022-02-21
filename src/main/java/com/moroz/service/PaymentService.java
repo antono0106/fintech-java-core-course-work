@@ -35,6 +35,6 @@ public class PaymentService implements Service<PaymentEntity> {
     }
 
     public PaymentEntity findById(long id) {
-        return null;
+        return paymentDao.findById(id);
     }
 }

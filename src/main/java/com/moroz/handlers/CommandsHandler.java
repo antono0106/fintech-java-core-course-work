@@ -33,10 +33,10 @@ public class CommandsHandler {
         logger.info("Processing lines...");
 
         Timer paymentTimer = new Timer(true);
-        paymentTimer.scheduleAtFixedRate(new PaymentStatusTask(), 2000, 2000);
+        paymentTimer.scheduleAtFixedRate(new PaymentStatusTask(), 1000, 1000);
 
         Timer ticketTimer = new Timer(true);
-        ticketTimer.scheduleAtFixedRate(new TicketStatusTask(), 2000, 2000);
+        ticketTimer.scheduleAtFixedRate(new TicketStatusTask(), 1000, 1000);
 
         for (String line : fileLines) {
             if (!line.contains("|")) {
