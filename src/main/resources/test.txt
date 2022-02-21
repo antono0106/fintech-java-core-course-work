@@ -1,0 +1,11 @@
+REGISTER|MOROOOOOOOZ|a@mail.com|0676353555
+CREATE_CINEMA|some_cinema 4
+CREATE_CINEMA|some_cinema 5
+CREATE_MOVIE|some_movie3
+CREATE_MOVIE|some_movie4
+CREATE_MOVIE_SHOW|some_movie3|some_cinema 4|00:00:00|100
+CREATE_MOVIE_SHOW|some_movie4|some_cinema 5|00:00:00|100
+CREATE_MOVIE_SHOW|some_movie4|some_cinema 5|01:00:00|100
+BUY_TICKET|some_movie4|some_cinema 5|01:00:00|1|1|
+BUY_TICKET|some_movie4|some_cinema 5|01:00:00|1|2|
+BUY_TICKET|some_movie4|some_cinema 5|01:00:00|1|3|
